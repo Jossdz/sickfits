@@ -1,7 +1,8 @@
 import React from 'react'
 import {Query} from 'react-apollo'
-import Error from './ErrorMessage'
 import gql from 'graphql-tag'
+import propTypes from 'prop-types'
+import Error from './ErrorMessage'
 import Table from './styles/Table'
 import SickButton from './styles/SickButton'
 
@@ -73,4 +74,14 @@ const User = ({user}) => (
     </td>
   </tr>
 )
+
+User.propTypes = {
+  user: propTypes.shape({
+    name: propTypes.string,
+    email: propTypes.string,
+    id: propTypes.string,
+    permissions: propTypes.array
+  }).isRequired
+}
+
 export default permissions
