@@ -3,6 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import Router from 'next/router'
 import nProgress from 'nprogress'
+import Cart from './Cart'
 
 Router.onRouteChangeStart = () => {
   nProgress.start()
@@ -20,56 +21,54 @@ const Logo = styled.h1`
   position: relative;
   z-index: 2;
   transform: skew(-7deg);
-  a{
+  a {
     padding: 0.5rem 1rem;
-    background: ${props=> props.theme.red};
+    background: ${props => props.theme.red};
     color: white;
     text-transform: uppercase;
     text-decoration: none;
-  } 
-  @media(max-width: 1300px){
+  }
+  @media (max-width: 1300px) {
     margin: 0;
     text-align: center;
-
   }
 `
 
 const StyledHeader = styled.header`
-  .bar{
+  .bar {
     border-bottom: 10px solid ${props => props.theme.black};
     display: grid;
     grid-template-columns: auto 1fr;
     justify-content: space-between;
     align-items: stretch;
-    @media(max-width: 1300px){
+    @media (max-width: 1300px) {
       grid-template-columns: 1fr;
       justify-content: center;
     }
   }
-  .sub-bar{
+  .sub-bar {
     display: grid;
     grid-template-columns: 1fr auto;
-    border-bottom: 1px solid ${props => props.theme.lightGrey}
+    border-bottom: 1px solid ${props => props.theme.lightGrey};
   }
 `
 
 const Header = () => (
   <StyledHeader>
-    <div className="bar">
+    <div className='bar'>
       <Logo>
         <Link href='/'>
           <a>Sick fits</a>
         </Link>
       </Logo>
-      <Nav/>
+      <Nav />
     </div>
-    
-    <div className="sub-bar">
+
+    <div className='sub-bar'>
       <p>search</p>
     </div>
-    <div>
-      Cart
-    </div>
+    <div>Cart</div>
+    <Cart />
   </StyledHeader>
 )
 
