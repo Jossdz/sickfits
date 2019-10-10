@@ -27,7 +27,8 @@ const Query = {
     hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE'])
     // if they do query all users
     return ctx.db.query.users({}, info)
-  }
+  },
+  cartItems: forwardTo('db')
 }
 
 module.exports = Query
