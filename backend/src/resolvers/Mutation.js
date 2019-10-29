@@ -42,7 +42,7 @@ const Mutations = {
   async deleteItem(parent, args, ctx, info) {
     const where = {id: args.id}
 
-    const item = await ctx.db.query.item({where}, `{id title user {id}}`)
+    const item = await ctx.db.query.item({where}, `{id title user{id}}`)
     const ownsItem = item.user.id === ctx.request.userId
     const hasPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN', 'ITEMDELETE'].includes(permission)
@@ -59,6 +59,11 @@ const Mutations = {
   async signup(paren, args, ctx, info) {
     // tolowercase email
     args.email = args.email.toLowerCase()
+
+    const users = await ctx.db.query.users()
+    const exists = users.filter(user => user.email === args.email)
+
+    if (exists.length >= 1) throw new Error(`Email in use`)
     // hash password
     const password = await bcrypt.hash(args.password, 10)
     // create user
@@ -233,6 +238,22 @@ const Mutations = {
       },
       info
     )
+  },
+  async removeFromCart(parent, args, ctx, info) {
+    // 1. find the cart item
+    const cartItem = await ctx.db.query.cartItem(
+      {
+        where: {id: args.id}
+      },
+      `{id, user {id}}`
+    )
+    if (!cartItem) throw new Error(`No cart item found`)
+    // 2. make sure they own the cart
+    if (cartItem.user.id != ctx.request.userId) {
+      throw new Error(`No cart item found`)
+    }
+    // 3. delete the cart item
+    return ctx.db.mutation.deleteCartItem({where: {id: args.id}}, info)
   }
 }
 
